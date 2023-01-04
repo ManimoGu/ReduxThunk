@@ -16,8 +16,25 @@ app.listen(9000, ()=> console.log("server running on port 9000..."))
 
 
 
-app.post("/AddUser", (req,res)=>{
+app.post("/AddUser", async (req,res)=>{
 
     const user = req.body
+  
+    try{
+        
+    const result = await UserModel.findOne({Email :user.Email })
+    if(result){
+        res.send("Cet utilisateur existe deja")
+    }else{
+        const newuser = new UserModel(user)
+        const element = await newuser.save()
+        res.send("Added")
+    }
+
+}catch(err){console.log(err)}
+    
+    
+
+   
 
 })
